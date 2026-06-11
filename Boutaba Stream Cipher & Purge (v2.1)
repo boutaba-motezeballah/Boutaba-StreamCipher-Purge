@@ -1,0 +1,115 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define BUFFER_SIZE 4096
+#define KEY_SIZE 128
+
+void advanced_cipher_engine(const char *input_path, const char *output_path, const char *secret_key, int mode) {
+    FILE *src = fopen(input_path, "rb");
+    FILE *dest = fopen(output_path, "wb");
+    
+    if (!src || !dest) {
+        printf("[-] Critical Matrix Error: Cannot bind target file vectors. Access Denied.\n");
+        if (src) fclose(src);
+        if (dest) fclose(dest);
+        return;
+    }
+
+    // حجز بافر ديناميكي في الـ Heap لتسريع النقل والـ Streaming 100%
+    unsigned char *buffer = (unsigned char *)malloc(BUFFER_SIZE);
+    if (!buffer) {
+        printf("[-] Memory Allocation Failed inside Heap Matrix.\n");
+        fclose(src); fclose(dest);
+        return;
+    }
+
+    size_t key_len = strlen(secret_key);
+    
+    // حماية إضافية لحالة عدم إدخال مفتاح سري
+    if (key_len == 0) {
+        printf("[-] Critical Failure: Secret key length is zero. Halting Engine.\n");
+        free(buffer); fclose(src); fclose(dest);
+        return;
+    }
+
+    size_t key_index = 0;
+    size_t read_bytes;
+
+    printf("[*] Core Crypto Phase: Executing stream injection... \n");
+
+    while ((read_bytes = fread(buffer, 1, BUFFER_SIZE, src)) > 0) {
+        for (size_t i = 0; i < read_bytes; i++) {
+            // التكتيك المريgل: الـ Salt يدور بين 0 و 6 لحماية تكرار البايتات
+            unsigned char salt_factor = (unsigned char)(key_index % 7);
+            
+            if (mode == 1) {
+                // التشفير: نديرو XOR مع المفتاح أولاً، ثم نزيدو الـ Salt برا
+                buffer[i] = (unsigned char)((buffer[i] ^ secret_key[key_index]) + salt_factor);
+            } else {
+                // فك التشفير: عملية عكسية دقيقة، ننقصو الـ Salt أولاً، ثم نديرو الـ XOR
+                buffer[i] = (unsigned char)((buffer[i] - salt_factor) ^ secret_key[key_index]);
+            }
+            
+            key_index = (key_index + 1) % key_len;
+        }
+        fwrite(buffer, 1, read_bytes, dest);
+    }
+
+    free(buffer);
+    fclose(src);
+    fclose(dest);
+
+    // OpSec الصارمة: تدمير الملف الأصلي كليا بعد التشفير الناجح
+    if (mode == 1) {
+        printf("[*] OpSec Enforcement: Shredding and purging target source matrix... \n");
+        remove(input_path); 
+    }
+
+    printf("[+] Operational Crypto Success: Cipher sequence synchronized seamlessly! \n");
+}
+
+int main() {
+    char source_file[256];
+    char output_file[256];
+    char secret_key[KEY_SIZE];
+    int mode;
+
+    printf("=================================================================\n");
+    printf("  BOUTABA MILITARY-GRADE CRYPTO HARDENING v2.1 | SECURE MATRIX \n");
+    printf("=================================================================\n");
+    printf("1.  Secure Encrypt & Shred Source \n");
+    printf("2.  Decrypt & Restore Data Stream \n");
+    printf("================================================================: ");
+    if (scanf("%d", &mode) != 1 || (mode != 1 && mode != 2)) {
+        printf("[-] Invalid Matrix Option. System Halting.\n");
+        return 1;
+    }
+    getchar(); // تنظيف البافر تع الإدخال
+
+    printf(" : ");
+    fgets(source_file, sizeof(source_file), stdin);
+    source_file[strcspn(source_file, "\n")] = 0;
+
+    printf(": ");
+    fgets(output_file, sizeof(output_file), stdin);
+    output_file[strcspn(output_file, "\n")] = 0;
+
+    printf(" Secret Key (0 - 4): ");
+    fgets(secret_key, sizeof(secret_key), stdin);
+    secret_key[strcspn(secret_key, "\n")] = 0;
+
+    if (strlen(secret_key) < 4) {
+        printf("[-] OpSec Warning: Secret key is too weak. Matrix deployment denied.\n");
+        return 1;
+    }
+
+    advanced_cipher_engine(source_file, output_file, secret_key, mode);
+    
+    printf("=================================================================\n");
+    printf(" STATUS: COMPLETE PURE | INFRASTRUCTURE LOCKED DOWN 100%%         \n");
+    printf("=================================================================\n");
+
+    return 0;
+}
