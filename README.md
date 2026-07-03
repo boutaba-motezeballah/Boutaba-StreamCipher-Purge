@@ -1,4 +1,4 @@
-# 🥷 BSCP-Engine: Boutaba Stream Cipher & Purge (v2.2)
+#  BSCP-Engine: Boutaba Stream Cipher & Purge (v2.2)
 
 A military-grade, lightweight, and highly optimized cryptographic stream utility written in pure C. Designed for secure file encryption, obfuscation, and advanced Operational Security (OpSec) compliance. 
 
@@ -11,7 +11,7 @@ This engine is developed for academic research, data privacy defense, and local 
 
 ---
 
-## 🌀 Key Architectural Features
+##  Key Architectural Features
 
 * **Optimized Dynamic Heap Buffering:** Utilizes a 4096-byte `malloc` streaming matrix via standard `fread()` and `fwrite()` loops. It processes massive, multi-gigabyte files (binaries, videos, system images) smoothly with minimal volatile memory (RAM) overhead.
 * **Symmetric Salted Stream Cipher (v2.2 Hardened):** Implements a dynamic, index-based modulo-7 cryptographic Salt Factor `(key_index % 7)` nested entirely within symmetric bitwise XOR operations `buffer[i] ^ (secret_key[key_index] ^ salt_factor)`. This eliminates potential byte arithmetic overflows and guarantees identical bit-inversion during decryption.
