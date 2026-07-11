@@ -1,10 +1,10 @@
-# Boutaba-StreamCipher-Purge v1.0.4
+# c-stream-cipher v1.0.4
 
 A high-throughput, deterministic stream cipher implementation engineered for volatile memory scrubbing, dynamic byte-shuffling, and cryptographic secure-purge file system overrides.
 
 ##  Cryptographic Architecture & Primitive Mechanics
 
-The **Boutaba-StreamCipher-Purge** infrastructure executes sub-millisecond dynamic encryption routines utilizing a customized pseudo-random number generator (PRNG) state machine. The framework is architected to perform localized key-stream generation aligned with dynamic hardware registers, achieving linear complexity processing for large block-level continuous data mutations.
+The **c-stream-cipher** infrastructure executes sub-millisecond dynamic encryption routines utilizing a customized pseudo-random number generator (PRNG) state machine. The framework is architected to perform localized key-stream generation aligned with dynamic hardware registers, achieving linear complexity processing for large block-level continuous data mutations.
 
 ### Cipher Pipeline Matrix
 
