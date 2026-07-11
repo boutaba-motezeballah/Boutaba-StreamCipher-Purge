@@ -72,7 +72,7 @@ int main() {
     int mode;
 
     printf("=================================================================\n");
-    printf("  BOUTABA MILITARY-GRADE CRYPTO HARDENING v2.2 | SECURE MATRIX \n");
+    printf("                     c-stream-cipher                        \n");
     printf("=================================================================\n");
     printf("1.  Secure Encrypt & Shred Source \n");
     printf("2.  Decrypt & Restore Data Stream \n");
